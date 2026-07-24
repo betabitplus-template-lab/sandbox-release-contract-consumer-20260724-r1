@@ -12,4 +12,4 @@ dependencies = ["ternforge-release-contract-source"]
 required-version = "==0.8.17"
 
 [tool.uv.sources]
-ternforge-release-contract-source = { git = "https://github.com/betabitplus-template-lab/sandbox-release-contract-source-20260724-r1.git", tag = "v1.0.0" }
+ternforge-release-contract-source = { git = "https://github.com/betabitplus-template-lab/sandbox-release-contract-source-20260724-r1.git", tag = "v1.1.0" }
