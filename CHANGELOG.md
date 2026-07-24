@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/betabitplus-template-lab/sandbox-release-contract-consumer-20260724-r1/compare/v1.0.2...v1.0.3) (2026-07-24)
+
+
+### Bug Fixes
+
+* preserve official release output contract ([#13](https://github.com/betabitplus-template-lab/sandbox-release-contract-consumer-20260724-r1/issues/13)) ([9562140](https://github.com/betabitplus-template-lab/sandbox-release-contract-consumer-20260724-r1/commit/9562140329d55dc3ea1c688ab3eade7e8296e505))
+
 ## [1.0.2](https://github.com/betabitplus-template-lab/sandbox-release-contract-consumer-20260724-r1/compare/v1.0.1...v1.0.2) (2026-07-24)
 
 
