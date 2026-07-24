@@ -1,2 +1,2 @@
 def ready() -> bool:
-    return 1 == 1
+    return bool(1)
