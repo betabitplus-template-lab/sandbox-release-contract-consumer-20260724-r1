@@ -11,9 +11,9 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "ternforge-release-contract-source", git = "https://github.com/betabitplus-template-lab/sandbox-release-contract-source-20260724-r1.git?tag=v1.0.0" }]
+requires-dist = [{ name = "ternforge-release-contract-source", git = "https://github.com/betabitplus-template-lab/sandbox-release-contract-source-20260724-r1.git?tag=v1.1.0" }]
 
 [[package]]
 name = "ternforge-release-contract-source"
-version = "1.0.0"
-source = { git = "https://github.com/betabitplus-template-lab/sandbox-release-contract-source-20260724-r1.git?tag=v1.0.0#5f3638d1854772f81baeedf96aaadda904bd3e93" }
+version = "1.1.0"
+source = { git = "https://github.com/betabitplus-template-lab/sandbox-release-contract-source-20260724-r1.git?tag=v1.1.0#a3a5c03340614a590ac933f425c8ede068836f90" }
