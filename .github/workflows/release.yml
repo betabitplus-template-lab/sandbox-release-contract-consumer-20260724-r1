@@ -39,7 +39,7 @@ jobs:
           GH_TOKEN: ${{ steps.current.outputs.token }}
         run: |
           set -euo pipefail
-          branch="$(gh pr list --state open --json headRefName --jq '[.[] | select(.headRefName | startswith("release-please--branches--main"))][0].headRefName // ""')"
+          branch="$(gh pr list --repo "${{ github.repository }}" --state open --json headRefName --jq '[.[] | select(.headRefName | startswith("release-please--branches--main"))][0].headRefName // ""')"
           echo "branch=$branch" >> "$GITHUB_OUTPUT"
       - if: ${{ steps.release-pr.outputs.branch != '' }}
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
