@@ -33,6 +33,28 @@ jobs:
           token: ${{ steps.current.outputs.token }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+      - if: ${{ steps.rp.outputs.prs_created == 'true' }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ fromJSON(steps.rp.outputs.pr).headBranchName }}
+          token: ${{ steps.current.outputs.token }}
+          fetch-depth: 0
+      - if: ${{ steps.rp.outputs.prs_created == 'true' }}
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+        with:
+          version-file: pyproject.toml
+      - if: ${{ steps.rp.outputs.prs_created == 'true' }}
+        name: Synchronize release lockfile
+        run: |
+          set -euo pipefail
+          uv lock
+          if ! git diff --quiet -- uv.lock; then
+            git config user.name "Ternforge Release Contract Lab"
+            git config user.email "8123085+betabitplus@users.noreply.github.com"
+            git add uv.lock
+            git commit -m "chore: synchronize release lockfile"
+            git push
+          fi
       - if: ${{ steps.rp.outputs.release_created }}
         id: target
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
