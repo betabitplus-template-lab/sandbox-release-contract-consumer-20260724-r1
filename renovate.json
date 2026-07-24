@@ -1,0 +1,32 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits"
+  ],
+  "enabledManagers": [
+    "pep621"
+  ],
+  "dependencyDashboard": false,
+  "prCreation": "immediate",
+  "packageRules": [
+    {
+      "description": "Release runtime Git source updates as fixes",
+      "matchManagers": [
+        "pep621"
+      ],
+      "matchPackageNames": [
+        "ternforge-release-contract-source"
+      ],
+      "semanticCommitType": "fix",
+      "matchCurrentVersion": ">=1.0.0",
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    }
+  ]
+}

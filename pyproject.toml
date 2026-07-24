@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ternforge-release-contract-consumer"
+version = "1.0.0"
+requires-python = ">=3.12"
+dependencies = ["ternforge-release-contract-source"]
+
+[tool.uv]
+required-version = "==0.8.17"
+
+[tool.uv.sources]
+ternforge-release-contract-source = { git = "https://github.com/betabitplus-template-lab/sandbox-release-contract-source-20260724-r1.git", tag = "v1.0.0" }

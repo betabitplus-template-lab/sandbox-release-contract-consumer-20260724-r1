@@ -1,0 +1,19 @@
+version = 1
+revision = 3
+requires-python = ">=3.12"
+
+[[package]]
+name = "ternforge-release-contract-consumer"
+version = "1.0.0"
+source = { editable = "." }
+dependencies = [
+    { name = "ternforge-release-contract-source" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "ternforge-release-contract-source", git = "https://github.com/betabitplus-template-lab/sandbox-release-contract-source-20260724-r1.git?tag=v1.0.0" }]
+
+[[package]]
+name = "ternforge-release-contract-source"
+version = "1.0.0"
+source = { git = "https://github.com/betabitplus-template-lab/sandbox-release-contract-source-20260724-r1.git?tag=v1.0.0#5f3638d1854772f81baeedf96aaadda904bd3e93" }

@@ -1,0 +1,59 @@
+name: release
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - id: current
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        with:
+          app-id: ${{ secrets.LAB_APP_ID }}
+          private-key: ${{ secrets.LAB_APP_PRIVATE_KEY }}
+          owner: betabitplus-template-lab
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Verify current repository scope
+        env:
+          GH_TOKEN: ${{ steps.current.outputs.token }}
+          EXPECTED: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mapfile -t repos < <(gh api installation/repositories --paginate --jq '.repositories[].full_name')
+          test "${#repos[@]}" -eq 1
+          test "${repos[0]}" = "$EXPECTED"
+      - id: rp
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7
+        with:
+          token: ${{ steps.current.outputs.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+      - if: ${{ steps.rp.outputs.release_created }}
+        id: target
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        with:
+          app-id: ${{ secrets.LAB_APP_ID }}
+          private-key: ${{ secrets.LAB_APP_PRIVATE_KEY }}
+          owner: betabitplus-template-lab
+          repositories: sandbox-release-contract-target-20260724-r1
+          permission-contents: write
+      - if: ${{ steps.rp.outputs.release_created }}
+        name: Dispatch release
+        env:
+          GH_TOKEN: ${{ steps.target.outputs.token }}
+          EXPECTED: betabitplus-template-lab/sandbox-release-contract-target-20260724-r1
+          TARGET: betabitplus-template-lab/sandbox-release-contract-target-20260724-r1
+          SOURCE: ${{ github.repository }}
+          SOURCE_REF: ${{ steps.rp.outputs.tag_name }}
+          SOURCE_SHA: ${{ steps.rp.outputs.sha }}
+        run: |
+          set -euo pipefail
+          mapfile -t repos < <(gh api installation/repositories --paginate --jq '.repositories[].full_name')
+          test "${#repos[@]}" -eq 1
+          test "${repos[0]}" = "$EXPECTED"
+          jq -n --arg source_repository "$SOURCE" --arg source_ref "$SOURCE_REF" --arg source_sha "$SOURCE_SHA" '{event_type:"ternforge-release-contract",client_payload:{source_repository:$source_repository,source_ref:$source_ref,source_sha:$source_sha}}' | gh api --method POST "repos/${TARGET}/dispatches" --input - --silent
