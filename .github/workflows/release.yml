@@ -33,25 +33,17 @@ jobs:
           token: ${{ steps.current.outputs.token }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-      - id: release-pr
-        name: Locate open Release Please PR
-        env:
-          GH_TOKEN: ${{ steps.current.outputs.token }}
-        run: |
-          set -euo pipefail
-          branch="$(gh pr list --repo "${{ github.repository }}" --state open --json headRefName --jq '[.[] | select(.headRefName | startswith("release-please--branches--main"))][0].headRefName // ""')"
-          echo "branch=$branch" >> "$GITHUB_OUTPUT"
-      - if: ${{ steps.release-pr.outputs.branch != '' }}
+      - if: ${{ steps.rp.outputs.prs_created == 'true' }}
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ steps.release-pr.outputs.branch }}
+          ref: ${{ fromJSON(steps.rp.outputs.pr).headBranchName }}
           token: ${{ steps.current.outputs.token }}
           fetch-depth: 0
-      - if: ${{ steps.release-pr.outputs.branch != '' }}
+      - if: ${{ steps.rp.outputs.prs_created == 'true' }}
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
         with:
           version-file: pyproject.toml
-      - if: ${{ steps.release-pr.outputs.branch != '' }}
+      - if: ${{ steps.rp.outputs.prs_created == 'true' }}
         name: Synchronize release lockfile
         run: |
           set -euo pipefail
